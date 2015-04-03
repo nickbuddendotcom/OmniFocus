@@ -30,7 +30,7 @@ var doc = app.defaultDocument;
  *  @return {Array} Array of selected tasks
  */
 function selected() {
-	return app.windows[0].content.selectedTrees.value();
+  return app.windows[0].content.selectedTrees.value();
 }
 
 /**
@@ -39,7 +39,7 @@ function selected() {
  * @return {Array} Array of every task in the default document
  */
 function allTasks() {
-	return doc.flattenedTasks.whose({completed: false})();
+  return doc.flattenedTasks.whose({completed: false})();
 }
 
 /**
@@ -48,7 +48,7 @@ function allTasks() {
  * @return {Array} Array of every project in the default document
  */
 function allProjects() {
-	return doc.flattenedProjects.whose({completed: false})();
+  return doc.flattenedProjects.whose({completed: false})();
 }
 
 /**
@@ -58,16 +58,16 @@ function allProjects() {
  * @return {array} Array of tasks that belong to contexts matching `context`
  */
 function tasksWithContext(context, inputTasks) {
-	var tasks = [];
-	var tasksToProcess = inputTasks ? inputTasks : allTasks();
-	tasksToProcess.forEach(function(task, index) {
+  var tasks = [];
+  var tasksToProcess = inputTasks ? inputTasks : allTasks();
+  tasksToProcess.forEach(function(task, index) {
     if (task.context() !== null) {
       if (context.toLowerCase() === task.context().name().toLowerCase() ) {
         tasks.push(task);
       }
     }
-	});
-	return tasks;
+  });
+  return tasks;
 }
 
 /**
@@ -79,16 +79,16 @@ function tasksWithContext(context, inputTasks) {
 *
 */
 function projectsWithName(name, inputProjects) {
-	var projects = [];
-	var projectsToProcess = inputProjects ? inputProjects : allProjects();
-	projectsToProcess.forEach(function(project, index) {
-		if (project.container() !== null) {
+  var projects = [];
+  var projectsToProcess = inputProjects ? inputProjects : allProjects();
+  projectsToProcess.forEach(function(project, index) {
+    if (project.container() !== null) {
       if (name.toLowerCase() === project.name().toLowerCase() ) {
-				projects.push(project);
-			}
-		}
-	});
-	return projects;
+        projects.push(project);
+      }
+    }
+  });
+  return projects;
 }
 
 /**
@@ -100,14 +100,14 @@ function projectsWithName(name, inputProjects) {
 *
 */
 function tasksWithName(name, inputTasks) {
-	var tasks = [];
-	var tasksToProcess = inputTasks ? inputTasks : allTasks();
-	tasksToProcess.forEach(function(task, index) {
+  var tasks = [];
+  var tasksToProcess = inputTasks ? inputTasks : allTasks();
+  tasksToProcess.forEach(function(task, index) {
     if (name.toLowerCase() ===  task.name().toLowerCase() ) {
-			tasks.push(task);
-		}
-	});
-	return tasks;
+      tasks.push(task);
+    }
+  });
+  return tasks;
 }
 
 /**
@@ -118,8 +118,8 @@ function tasksWithName(name, inputTasks) {
 *
 */
 function allWithName(searchTerm) {
-	var tasks = tasksWithName(searchTerm).concat(tasksWithContext(searchTerm)).concat(projectsWithName(searchTerm));
-	return tasks;
+  var tasks = tasksWithName(searchTerm).concat(tasksWithContext(searchTerm)).concat(projectsWithName(searchTerm));
+  return tasks;
 }
 
 /**
@@ -130,10 +130,10 @@ function allWithName(searchTerm) {
 *
 */
 function setDefer(tasks, date) {
-	tasks.forEach(function (task) {
-		date.getHours() === 0 ? date.setHours(8) : date
-		task.deferDate = date;
-	});
+  tasks.forEach(function (task) {
+    date.getHours() === 0 ? date.setHours(8) : date
+    task.deferDate = date;
+  });
 }
 
 /**
@@ -144,10 +144,10 @@ function setDefer(tasks, date) {
 *
 */
 function setDue(tasks, date) {
-	tasks.forEach(function (task) {
-		date.getHours() === 0 ? date.setHours(4) : date
-		task.dueDate = date;
-	});
+  tasks.forEach(function (task) {
+    date.getHours() === 0 ? date.setHours(4) : date
+    task.dueDate = date;
+  });
 }
 
 /**
@@ -161,9 +161,25 @@ function setDue(tasks, date) {
 */
 function setContext(tasks, context) {
   var newContext = typeof context === 'string' ? getContext(context) : context;
-	tasks.forEach(function(task) {
-		task.context = newContext;
-	});
+  tasks.forEach(function(task) {
+    task.context = newContext;
+  });
+}
+
+/**
+*
+* @method setCompleted
+* @param {array} tasks Tasks to set completed for
+* @param {(string|function)} completed True/false
+*   `completed` is a boolean for whether or not the
+* task should be marked completed
+*
+*/
+function setCompleted(tasks, completed) {
+  var completed = (completed) ? true : false;
+  tasks.forEach(function(task) {
+    task.completed = completed;
+  });
 }
 
 /**
@@ -174,7 +190,7 @@ function setContext(tasks, context) {
 *
 */
 function getContext(context) {
-	return doc.flattenedContexts.whose({name: context})[0];
+  return doc.flattenedContexts.whose({name: context})[0];
 }
 
 /**
@@ -185,7 +201,7 @@ function getContext(context) {
 *
 */
 function getProject(project) {
-	return doc.flattenedProjects.whose({name: project})[0];
+  return doc.flattenedProjects.whose({name: project})[0];
 }
 
 /**
@@ -211,7 +227,7 @@ function setProject(tasks, project) {
 *
 */
 function inboxTasks() {
-	return doc.inboxTasks();
+  return doc.inboxTasks();
 }
 
 /**
@@ -226,8 +242,8 @@ function inboxTasks() {
 */
 function makeTask(text, context, deferDate, dueDate, project) {
   var taskProject = typeof project === 'string' ? getProject(project) : project;
-	var taskObject = app.Task({name: text, context: context || null, deferDate: deferDate || null, dueDate: dueDate || null});
-	if (project)  {
+  var taskObject = app.Task({name: text, context: context || null, deferDate: deferDate || null, dueDate: dueDate || null});
+  if (project)  {
     taskProject.tasks.push(taskObject);
   } else {
     doc.inboxTasks.push(taskObject);
@@ -245,14 +261,14 @@ function makeTask(text, context, deferDate, dueDate, project) {
 *
 */
 function updateInboxTasks(context, project, deferDate, dueDate) {
-	var newContext = getContext(context);
-	var newProject = getProject(project);
-	inboxTasks().forEach(function(task) {
-		task.context = newContext;
-		task.deferDate = deferDate || null;
-		task.dueDate = dueDate || null;
-		pushTask(task, newProject);
-	});
+  var newContext = getContext(context);
+  var newProject = getProject(project);
+  inboxTasks().forEach(function(task) {
+    task.context = newContext;
+    task.deferDate = deferDate || null;
+    task.dueDate = dueDate || null;
+    pushTask(task, newProject);
+  });
 }
 
 /**
@@ -263,9 +279,9 @@ function updateInboxTasks(context, project, deferDate, dueDate) {
 *
 */
 function prefixTasksWith(tasks,text) {
-	tasks.forEach(function(task) {
-		task.name = text + ' ' + task.name();
-	});
+  tasks.forEach(function(task) {
+    task.name = text + ' ' + task.name();
+  });
 }
 
 /**
@@ -279,7 +295,7 @@ function prefixTasksWith(tasks,text) {
 * of.parse('Do something! @home ::misc #4pm #tomorrow')
 */
 function parse(string) {
-	app.parseTasksInto(doc, {withTransportText: string});
+  app.parseTasksInto(doc, {withTransportText: string});
 }
 
 /**
@@ -335,10 +351,10 @@ function logProject(tasks) {
 *
 */
 function makeProject(projectName, context, deferDate, dueDate, folder) {
-	var projectFolder = typeof folder === 'string' ? getFolder(folder) : folder;
-	var projectContext = typeof context === 'string' ? getContext(context) : context;
-	var projectObject = app.Project({name: projectName, context: projectContext || null, deferDate: deferDate || null, dueDate: dueDate || null});
-	if (folder) {
+  var projectFolder = typeof folder === 'string' ? getFolder(folder) : folder;
+  var projectContext = typeof context === 'string' ? getContext(context) : context;
+  var projectObject = app.Project({name: projectName, context: projectContext || null, deferDate: deferDate || null, dueDate: dueDate || null});
+  if (folder) {
     projectFolder.projects.push(projectObject);
   } else {
     doc.projects.push(projectObject);
@@ -353,9 +369,9 @@ function makeProject(projectName, context, deferDate, dueDate, folder) {
 *
 */
 function makeFolder(folderName, folderToNestIn) {
-	var containingFolder = typeof folderToNestIn === 'string' ? getFolder(folderToNestIn) : folderToNestIn;
-	var folderObject = app.Folder({name: folderName});
-	if (folderToNestIn) {
+  var containingFolder = typeof folderToNestIn === 'string' ? getFolder(folderToNestIn) : folderToNestIn;
+  var folderObject = app.Folder({name: folderName});
+  if (folderToNestIn) {
     containingFolder.folders.push(folderObject);
   } else {
     doc.folders.push(folderObject);
@@ -370,7 +386,7 @@ function makeFolder(folderName, folderToNestIn) {
 *
 */
 function getFolder(folderName) {
-	return doc.flattenedFolders.whose({name: folderName})[0];
+  return doc.flattenedFolders.whose({name: folderName})[0];
 }
 
 /**
@@ -452,11 +468,11 @@ function alert(text) {
 *
 */
 function openPerspective(perName) {
-	app.launch();
-	var window = app.windows[0];
-	if (window.visible()) {
-		window.perspectiveName = perName;
-	}
+  app.launch();
+  var window = app.windows[0];
+  if (window.visible()) {
+    window.perspectiveName = perName;
+  }
 }
 
 /**
