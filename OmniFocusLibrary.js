@@ -61,11 +61,11 @@ function tasksWithContext(context, inputTasks) {
 	var tasks = [];
 	var tasksToProcess = inputTasks ? inputTasks : allTasks();
 	tasksToProcess.forEach(function(task, index) {
-		if (task.context() !== null) {
-			if (searchString(context).test(task.context().name())) {
-				tasks.push(task);
-			}
-		}
+    if (task.context() !== null) {
+      if (context.toLowerCase() === task.context().name().toLowerCase() ) {
+        tasks.push(task);
+      }
+    }
 	});
 	return tasks;
 }
@@ -83,7 +83,7 @@ function projectsWithName(name, inputProjects) {
 	var projectsToProcess = inputProjects ? inputProjects : allProjects();
 	projectsToProcess.forEach(function(project, index) {
 		if (project.container() !== null) {
-			if (searchString(name).test(project.name())) {
+      if (name.toLowerCase() === project.name().toLowerCase() ) {
 				projects.push(project);
 			}
 		}
@@ -103,7 +103,7 @@ function tasksWithName(name, inputTasks) {
 	var tasks = [];
 	var tasksToProcess = inputTasks ? inputTasks : allTasks();
 	tasksToProcess.forEach(function(task, index) {
-		if (searchString(name).test(task.name())) {
+    if (name.toLowerCase() ===  task.name().toLowerCase() ) {
 			tasks.push(task);
 		}
 	});
@@ -266,17 +266,6 @@ function prefixTasksWith(tasks,text) {
 	tasks.forEach(function(task) {
 		task.name = text + ' ' + task.name();
 	});
-}
-
-/**
- * the term to be searched for
- *
- * @method searchString
- * @param {String} term
- * @return {RegExp} RexExp object
- */
-function searchString(term) {
-	return new RegExp(term, 'i');
 }
 
 /**
